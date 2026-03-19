@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Oferta Especial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://wiapy.com/sell/1.0.0/sell.min.js"></script>
+  <style>
+    :root {
+      --red: #E8231A;
+      --red-dark: #C01A12;
+      --red-glow: rgba(232, 35, 26, 0.18);
+      --bg: #0D0D0D;
+      --surface: #161616;
+      --border: rgba(255,255,255,0.07);
+      --text: #F5F5F5;
+      --muted: #888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Manrope', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #111;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .progress-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .progress-pct {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .progress-track {
+      height: 6px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--red-dark), var(--red), #ff5e55);
+      box-shadow: 0 0 12px var(--red-glow);
+      transition: width 1.6s cubic-bezier(0.25, 1, 0.5, 1);
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 40px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35));
+      border-radius: 99px;
+      animation: shimmer 1.8s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 72px 24px 16px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(232, 35, 26, 0.1);
+      border: 1px solid rgba(232, 35, 26, 0.3);
+      border-radius: 99px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 36px;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .headline {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      padding: 0 32px;
+      color: var(--text);
+      margin-bottom: 8px;
+      animation: fadeDown 0.7s 0.1s ease both;
+    }
+
+    .headline span {
+      color: var(--red);
+      position: relative;
+      display: inline-block;
+    }
+
+    /* animated underline on headline accent */
+    .headline span::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -4px;
+      width: 100%; height: 3px;
+      background: var(--red);
+      border-radius: 2px;
+      transform-origin: left;
+      animation: lineGrow 0.8s 0.9s cubic-bezier(0.25, 1, 0.5, 1) both;
+    }
+
+    @keyframes lineGrow {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+
+    .subheadline {
+      margin-top: 20px;
+      font-size: clamp(1rem, 2.4vw, 1.22rem);
+      font-weight: 500;
+      color: #bbb;
+      line-height: 1.6;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .subheadline strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12px;
+      animation: fadeUp 0.7s 0.45s ease both;
+    }
+
+    .scroll-hint-label { display: none; }
+
+    .scroll-arrow {
+      color: var(--red);
+      animation: bounce 1.6s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(6px); }
+    }
+
+    /* ── VIDEO PLACEHOLDER ── */
+    .video-wrap {
+      max-width: 360px;
+      margin: 48px auto 0;
+      padding: 0 24px;
+      animation: fadeUp 0.7s 0.5s ease both;
+    }
+
+    .video-container {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* subtle grain overlay */
+    .video-container::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.6;
+    }
+
+    .video-poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.25;
+    }
+
+    .play-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 3;
+    }
+
+    .play-circle {
+      width: 76px; height: 76px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 0 var(--red-glow);
+      animation: ripple 2s ease-in-out infinite;
+      transition: transform 0.2s;
+    }
+
+    .video-container:hover .play-circle {
+      transform: scale(1.08);
+    }
+
+    @keyframes ripple {
+      0%  { box-shadow: 0 0 0 0   rgba(232,35,26,0.5); }
+      70% { box-shadow: 0 0 0 28px rgba(232,35,26,0);   }
+      100%{ box-shadow: 0 0 0 0   rgba(232,35,26,0);   }
+    }
+
+    .play-circle svg {
+      margin-left: 4px;
+    }
+
+    .play-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ── CTA AREA ── */
+    .cta-area {
+      max-width: 680px;
+      margin: 40px auto 80px;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      animation: fadeUp 0.7s 0.7s ease both;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--red);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 18px 40px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 28px rgba(232,35,26,0.35);
+    }
+
+    .cta-btn:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 36px rgba(232,35,26,0.45);
+    }
+
+    .cta-skip {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color 0.2s;
+    }
+    .cta-skip:hover { color: #ccc; }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-18px); }
+      to   { opacity: 1; transform: translateY(0);     }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar-wrapper">
+    <div class="progress-meta">
+      <span class="progress-label">Processando sua compra</span>
+      <span class="progress-pct" id="pctLabel">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Oferta exclusiva — apenas agora
+    </div>
+
+    <h1 class="headline">
+      Parabéns! Você acaba de economizar <span>meses de planejamento.</span>
+    </h1>
+
+    <p class="subheadline">
+      <strong>Assista esse vídeo agora</strong> e receba um bônus extra que preparei especialmente para você!
+    </p>
+  </section>
+
+  <!-- SCROLL HINT -->
+  <div class="scroll-hint">
+    <span class="scroll-hint-label">Assista o vídeo abaixo</span>
+    <svg class="scroll-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="video-wrap">
+    <div style="padding:177.78% 0 0 0;position:relative;border-radius:16px;overflow:hidden;">
+      <iframe src="https://player.vimeo.com/video/1173696277?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Aula Participativa"></iframe>
+    </div>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-area">
+    <div id="wiapy_upsell"></div>
+    <script>
+    initWiapyUpsell({
+        linkUrl: "https://pay.wiapy.com/checkout/69b45a84171caffc995c6bfc",
+        linkText: "SIM, EU ACEITO ESSA OFERTA",
+        styles: {
+            backgroundColor: "#00d769",
+            hoverBackgroundColor: "#00b85a",
+            fontSize: "17px",
+            borderRadius: "10px"
+        },
+        refusalLinkUrl: "https://wiapy.com/login",
+        refusalLinkText: "Recusar está oferta",
+        refusalLinkColor: "#888888"
+    });
+    </script>
+  </div>
+
+  <script>
+    // Animate progress bar to 95% on load
+    window.addEventListener('load', () => {
+      const fill = document.getElementById('progressFill');
+      const label = document.getElementById('pctLabel');
+      const target = 95;
+
+      setTimeout(() => {
+        fill.style.width = target + '%';
+
+        // Count up number
+        let current = 0;
+        const step = () => {
+          current += 1;
+          label.textContent = current + '%';
+          if (current < target) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }, 300);
+    });
+  </script>
+</body>
+</html>
