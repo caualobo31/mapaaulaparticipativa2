@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Oferta Especial</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <script src="https://wiapy.com/sell/1.0.0/sell.min.js"></script>
   <style>
     :root {
       --red: #E8231A;
@@ -386,22 +385,11 @@
 
   <!-- CTA -->
   <div class="cta-area">
-    <div id="wiapy_upsell"></div>
-    <script>
-    initWiapyUpsell({
-        linkUrl: "https://pay.wiapy.com/checkout/69bc3d35a96cf4acc0732790",
-        linkText: "SIM, EU ACEITO ESSA OFERTA",
-        styles: {
-            backgroundColor: "#00d769",
-            hoverBackgroundColor: "#00b85a",
-            fontSize: "17px",
-            borderRadius: "10px"
-        },
-        refusalLinkUrl: "https://wiapy.com/login",
-        refusalLinkText: "Recusar está oferta",
-        refusalLinkColor: "#000000"
-    });
-    </script>
+    <a href="https://pay.wiapy.com/69be975ff94362332f839bf3" class="cta-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      SIM, EU ACEITO ESSA OFERTA
+    </a>
+    <button class="cta-skip" onclick="window.location.href='https://classpilotpages.vercel.app'">Recusar esta oferta</button>
   </div>
 
   <script>
